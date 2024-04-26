@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import SignalingChannel from './Signaling';
 
-function Meet() {
+function Meet({remoteClientId}) {
+    
     const [stream, setStream] = useState(null);
     const [error, setError] = useState(null);
 
@@ -37,6 +39,19 @@ function Meet() {
             console.error('Error opening video camera.', error);
         }
     }
+
+    useEffect(() => {
+        // Initialize the signaling channel
+        const signalingChannel = new SignalingChannel(remoteClientId);
+    
+        // Example: Send a message to the remote client
+        signalingChannel.send('Hello from React!');
+    
+        // Cleanup function
+        return () => {
+          // Close the signaling channel or perform any cleanup
+        };
+      }, [remoteClientId]);
 
     return (
         <div>
